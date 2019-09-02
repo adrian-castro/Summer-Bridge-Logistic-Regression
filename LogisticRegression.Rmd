@@ -79,7 +79,7 @@ library(knitr)
 
 Here we give a table of our predicted probabilities. 
 ```{r}
-kable(dfTable, caption = "Predictied Probabilities Based on First Assessment Score")
+kable(dfTable, caption = "Predictied Likelihood Based on First Assessment Score")
 ```
 
 
