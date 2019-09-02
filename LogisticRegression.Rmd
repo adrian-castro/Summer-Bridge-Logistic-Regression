@@ -1,0 +1,85 @@
+---
+title: "Logistic Regression"
+author: "Adrian Castro"
+date: "September 2, 2019"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**The Data: **
+
+The response variable is "Passed". Passed = 0 if the student scored a 45 or less. Passed = 1 if the student scored higher than 45. 
+The predictor or feature used is the first placement score which takes values between 0 and 100. However, since students automatically placed into a credit bearing math class if they scored higher than 45, the data set was trimmed to only include students who scored a 45 or less.
+
+**Model Selection:**
+
+A series of binary regression models were tested to find the one that best predicts if a student will place into a credit bearing math class based on their first Aleks placement score. Upon testing different models (logit, probit, cloglog), they all performed similarly with the logit model having the smallest AIC. For the rest of the analysis the logit regression model was used. 
+
+
+```{r, include = FALSE}
+dat18 <- read.csv("Master2018forBinReg.csv", header = TRUE);
+dat18 <- subset.data.frame(dat18, ALEKS.Score <46)
+```
+```{r}
+logitMod<-glm(dat18$Passed~dat18$ALEKS.Score, family = binomial(link = "logit"));
+summary(logitMod);
+
+```
+
+Here we see that the first assessment score is a significant predictor of whether or not a student will place into a credit bearing math class with the p-value of 4.27e-12 i.e. very close to 0. 
+
+**Visualization:**
+
+Here the points on the graphs are the observations based on our data set. For example a point on the graph of (10, 1) means that the student scored a 10 on the first assessment and the the value of 1 means that they did place into a credit bearing math class. 
+The curve on the graph represents our "fitted" or predicted values. A point on the curve of (10, 0.17) means that based on the model we would predict that a student who scores a 10 on the first assessment would have a probability of 17% of placing into a credit bearing math class.   
+
+```{r}
+plot(dat18$ALEKS.Score, dat18$Passed, xlab = "First Assessment Score", ylab = "Probability of Scoring >45 on Third Assessment");
+fit <- function(x){
+  1/(1+exp(-(-2.9309 + (0.1371*x))))
+}
+curve(fit, add = TRUE);
+abline(h = 0.5, lty = 2)
+```
+
+
+
+This graph is the interactive version of the previous graph.  
+
+```{r, include=FALSE}
+library(plotly);
+library(ggplot2);
+```
+```{r}
+pl <- ggplot(dat18, aes(x = ALEKS.Score, y = Passed))+
+  geom_point()+stat_smooth(method = "glm", method.args = list(family = "binomial"), se= FALSE) +
+  xlab("First Assessment Score")+ylab("Probability of Scoring >45 on Third Assessment") +geom_count();
+ggplotly(pl);
+
+```
+
+```{r, include = FALSE}
+Scores <- c(seq(0, 45, 5));
+
+Probability <- c(fit(Scores));
+
+dfTable <- data.frame(Scores, Probability);
+```
+
+
+
+
+```{r, include = FALSE}
+library(knitr)
+```
+
+Here we give a table of our predicted probabilities. 
+```{r}
+kable(dfTable, caption = "Predictied Probabilities Based on First Assessment Score")
+```
+
+
