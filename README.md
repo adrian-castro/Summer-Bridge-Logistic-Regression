@@ -1,5 +1,4 @@
 # Summer-Bridge-Logistic-Regression
-Predicting student success in Bridge Program using logistic regression. 
 **Project Status: Complete**
 https://adrian-castro.github.io/Summer-Bridge-Logistic-Regression/
 
