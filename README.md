@@ -1,6 +1,7 @@
 # Summer-Bridge-Logistic-Regression
 Predicting student success in Bridge Program using logistic regression. 
 **Project Status: Complete**
+https://adrian-castro.github.io/Summer-Bridge-Logistic-Regression/
 
 ## Project Motivation/Objective 
 The Bridge program is a summer program which aims to help students who have been placed into remedial math courses test into credit bearing math courses by way of a placement exam. The objecitive is to gain insight on which students succeed in the program and which students may benefit from taking the remedial courses. 
